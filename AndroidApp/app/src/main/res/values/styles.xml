@@ -30,7 +30,7 @@
         <item name="android:gravity">left</item>
         <item name="android:textSize">25sp</item>
         <item name="colorPrimary">@color/MevoLightBlue</item>
-        <item name="colorPrimaryDark">white</item>
+        <item name="colorPrimaryDark">#FFF</item>
         <item name="colorAccent">@color/MevoRed</item>
     </style>
 
