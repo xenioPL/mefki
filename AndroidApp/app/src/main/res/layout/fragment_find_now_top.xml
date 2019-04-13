@@ -19,7 +19,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" style="@style/AlarmItemOfList"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginEnd="4dp" android:layout_marginRight="4dp"
+                android:layout_marginEnd="32dp" android:layout_marginRight="32dp"
                 app:layout_constraintVertical_bias="0.0"/>
 
         <View
@@ -32,7 +32,7 @@
 
         <ImageView
                 android:id="@+id/navigation_dashboard"
-                android:title="@string/title_alarms" android:layout_height="56dp" android:layout_width="52dp"
+                android:title="@string/title_alarms" android:layout_height="36dp" android:layout_width="37dp"
                 app:layout_constraintStart_toEndOf="@+id/view"
                 android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
@@ -53,4 +53,9 @@
             android:layout_height="20dp" android:id="@+id/seekBar2"
             style="@style/AlarmSwitchItem"
             android:layout_marginTop="10dp" app:layout_constraintTop_toBottomOf="@+id/AlarmsSetingsDistance"/>
+    <CheckBox
+            android:text=""
+            android:layout_width="match_parent"
+            style="@style/AlarmSwitchItem"
+            android:layout_height="wrap_content" android:id="@+id/checkBox" android:checked="true"/>
 </LinearLayout>
