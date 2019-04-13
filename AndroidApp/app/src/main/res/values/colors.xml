@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#384977</color>
+    <color name="colorPrimaryDark">#ACACAC</color>
+    <color name="colorAccent">#ACACAC</color>
+    <color name="MevoLightBlue">#BCDDEE</color>
+    <color name="MevoRed">#EA5144</color>
 </resources>
