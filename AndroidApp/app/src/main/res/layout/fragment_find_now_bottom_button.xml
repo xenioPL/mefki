@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <TextView
+            android:textColor="#384977"
+            android:background="#ffffff"
+            android:textSize="30dp"
+            android:padding="20dp"
+            android:text="@string/title_find_now"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_height="wrap_content" android:id="@+id/findAndSearchText"/>
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_blue_bike_button_icon"
+            android:id="@+id/findNowButton"
+            android:layout_above="@+id/findAndSearchText" android:layout_marginBottom="-40dp"
+            style="@style/Base.Widget.AppCompat.Button.Borderless" android:scaleType="center"/>
+    <!--wymien na @drawable/ic_red_wheel-->
+</RelativeLayout>
