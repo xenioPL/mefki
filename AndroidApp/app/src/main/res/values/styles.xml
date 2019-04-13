@@ -9,7 +9,7 @@
     </style>
 
     <style name="AlarmTextRightItemOfList" parent="@style/AlarmItemOfList">
-        <item name="android:layout_marginEnd">@dimen/margin_alarm</item>
+        <!--<item name="android:layout_marginEnd">@dimen/margin_alarm</item>-->
         <item name="android:textSize">30sp</item>
         <item name="android:layout_width">150dp</item>
     </style>
