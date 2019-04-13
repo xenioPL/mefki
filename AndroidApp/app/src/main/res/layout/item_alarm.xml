@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.appcompat.widget.SwitchCompat
+            android:text="Alarm 1" android:textColor="@color/MevoLightBlue"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/alarm_switch"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/AlarmSwitchItem" app:layout_constraintHorizontal_bias="1.0" android:layout_marginTop="12dp"/>
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+               tools:layout_editor_absoluteY="196dp" tools:layout_editor_absoluteX="0dp" android:id="@+id/AlarmMinilizeItem">
+        <TextView
+                android:text="8:30"
+                android:layout_height="wrap_content" android:id="@+id/from_hour"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" style="@style/AlarmTextRightItemOfList"/>
+        <TextView
+                android:text="till"
+                android:layout_height="wrap_content" android:id="@+id/till"
+                app:layout_constraintTop_toBottomOf="@+id/from_hour"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent" style="@style/AlarmTextRightItemOfList"/>
+        <TextView
+                android:text="10:30"
+                android:layout_height="wrap_content" android:id="@+id/to_hour"
+                app:layout_constraintTop_toBottomOf="@+id/till"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/AlarmTextRightItemOfList"/>
+        <TextView
+                android:text="Fri, We, Mon"
+                android:layout_height="wrap_content" android:id="@+id/days"
+                android:layout_width="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                style="@style/AlarmTextLeftItemOfList"
+                android:layout_marginBottom="10dp" app:layout_constraintBottom_toTopOf="@+id/address"/>
+
+        <TextView
+                android:text="Grunwaldzka 210"
+                android:layout_height="wrap_content" android:id="@+id/address"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/days"
+                style="@style/AlarmTextLeftItemOfList"/>
+        <TextView
+                android:text="Radius: 1000m"
+                android:layout_height="wrap_content" android:id="@+id/radius"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/address"
+                style="@style/AlarmTextLeftItemOfList"
+        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+            android:layout_width="match_parent" android:layout_height="3dp"
+            android:background="@color/MevoLightBlue" android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/AlarmItemOfList" android:id="@+id/alarmLine" tools:layout_editor_absoluteX="32dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/radius"/>
+</LinearLayout>
