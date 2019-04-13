@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.appcompat.widget.SwitchCompat
+            android:text="Alarm 1" android:textColor="@color/colorPrimary"
+            android:layout_height="25dp" android:id="@+id/alarm_switch"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/AlarmSwitchItem" app:layout_constraintHorizontal_bias="1.0" android:layout_marginTop="39dp"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/seekBar"/>
+    <TextView
+            android:text="Search Radius: 1000m"
+            android:layout_height="25dp" android:id="@+id/seekBarText"
+            android:layout_width="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/AlarmTextLeftItemOfList"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/seekBar"/>
+    <View
+            android:layout_width="3dp" android:layout_height="25dp"
+            android:background="@color/colorPrimary"
+            android:id="@+id/alarmSeekBarVerticalLine"
+            app:layout_constraintStart_toEndOf="@+id/seekBarText"
+            tools:layout_editor_absoluteY="101dp" android:layout_marginLeft="8dp" android:layout_marginStart="8dp"/>
+
+    <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="20dp" android:id="@+id/seekBar"
+            style="@style/AlarmSwitchItem"
+            tools:layout_editor_absoluteX="32dp"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/alarmsMapView"/>
+    <com.google.android.gms.maps.MapView
+            android:layout_width="match_parent"
+            android:layout_height="200dp" android:id="@+id/alarmsMapView"
+            style="@style/AlarmSwitchItem" tools:layout_editor_absoluteY="162dp" tools:layout_editor_absoluteX="32dp"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
