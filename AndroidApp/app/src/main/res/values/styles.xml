@@ -14,12 +14,12 @@
     </style>
 
     <style name="GillSansMTTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">@font/GillSansMT</item>
+        <item name="android:fontFamily">@font/gillsansmt_ttf</item>
     </style>
 
     <style name="GillSansMTButtonStyle" parent="android:Widget.Holo.Button">
-        <item name="android:fontFamily">@font/GillSansMTBold</item>
-        <item name="android:background">color: #ffffffff </item>
+        <item name="android:fontFamily">@font/gillsansmtbold_ttf</item>
+        <item name="android:background">#ffff</item>
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 

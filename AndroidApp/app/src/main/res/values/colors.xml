@@ -5,4 +5,5 @@
     <color name="colorAccent">#ACACAC</color>
     <color name="MevoLightBlue">#BCDDEE</color>
     <color name="MevoRed">#EA5144</color>
+    <color name="appBackground">#FFF</color>
 </resources>

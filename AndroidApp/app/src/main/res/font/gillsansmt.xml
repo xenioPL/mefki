@@ -3,9 +3,9 @@
     <font
             android:fontStyle="normal"
             android:fontWeight="400"
-            android:font="@font/GillSansMT" />
+            android:font="@font/gillsansmt_ttf" />
     <font
             android:fontStyle="normal"
             android:fontWeight="700"
-            android:font="@font/GillSansMTBold" />
+            android:font="@font/gillsansmtbold_ttf" />
 </font-family>
