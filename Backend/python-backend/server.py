@@ -9,7 +9,6 @@ from io import StringIO
 app = Flask(__name__)
 map = {}
 
-@app.route("/doMath")
 def doMath():
     raw_csv = requests.get(
         "http://rowermevo.pl/maps/locations.txt?key=jF5puHQe3CqssPZh",
@@ -57,12 +56,12 @@ def doMath():
         if row["DOSTĘPNE ROWERY"] == "0" and map[row["NUMER STACJI"]]["time"] is None:
             map[row["NUMER STACJI"]]["time"] = datetime.datetime.now()
 
-    print(map)
     return "lol"
 
 
 @app.route("/getStations")
 def getStations():
+    doMath()
     raw_csv = requests.get(
         "http://rowermevo.pl/maps/locations.txt?key=jF5puHQe3CqssPZh",
         headers={
@@ -85,6 +84,7 @@ def getStations():
 
 @app.route("/getNumberFromStations")
 def getNumberFromStations():
+    doMath()
     raw_csv = requests.get(
         "http://rowermevo.pl/maps/locations.txt?key=jF5puHQe3CqssPZh",
         headers={
@@ -100,11 +100,13 @@ def getNumberFromStations():
 
     for row in reader:
         if row["NUMER STACJI"] in stations:
+            time_to = -1.0
+            if row["NUMER STACJI"] in map.keys():
+                time_to = map[row["NUMER STACJI"]]["average"]
             json_out.append(
-                {"id": int(row["NUMER STACJI"]), "number": int(row["DOSTĘPNE ROWERY"])}
+                {"id": int(row["NUMER STACJI"]), "number": int(row["DOSTĘPNE ROWERY"]), "time_to": time_to}
             )
     return json.dumps(json_out)
-
 
 
 if __name__ == "__main__":
