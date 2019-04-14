@@ -31,7 +31,7 @@
                 app:layout_constraintEnd_toEndOf="parent" style="@style/AlarmItemOfList"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginEnd="76dp" android:layout_marginRight="76dp"
-                app:layout_constraintVertical_bias="0.0" android:fontFamily="@font/GillSansMTBold"
+                app:layout_constraintVertical_bias="0.0" android:fontFamily="@font/gillsansmtbold_ttf"
                 android:textColor="@color/colorPrimary" android:layout_marginBottom="8dp"/>
 
         <View
@@ -70,7 +70,7 @@
                 android:layout_marginStart="12dp" app:layout_constraintStart_toEndOf="@+id/seekBarTextMeters"
                 app:layout_constraintEnd_toStartOf="@+id/view" android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp" app:layout_constraintHorizontal_bias="0.428"
-                android:textColor="@color/colorPrimary" android:fontFamily="@font/GillSansMTBold"/>
+                android:textColor="@color/colorPrimary" android:fontFamily="@font/gillsansmtbold_ttf"/>
         <SeekBar
                 android:splitTrack="false"
                 android:layout_width="312dp"

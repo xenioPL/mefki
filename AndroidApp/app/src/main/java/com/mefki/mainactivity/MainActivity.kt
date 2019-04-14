@@ -7,11 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.mefki.mainactivity.maps.MapsActivity
 import androidx.fragment.app.Fragment
 import com.mefki.mainactivity.alarms.AlarmsFragment
-import com.mefki.mainactivity.searchservice.SearchService
+import com.mefki.mainactivity.settings.SettingsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class
 MainActivity : AppCompatActivity() {
+
+    private var settingsFragment: SettingsFragment? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -27,8 +29,9 @@ MainActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_settings -> {
-                val service = Intent(this, SearchService::class.java)
-                startService(service)
+                if(settingsFragment == null)
+                    settingsFragment = SettingsFragment()
+                showFragment(settingsFragment!!)
                 return@OnNavigationItemSelectedListener true
             }
         }
