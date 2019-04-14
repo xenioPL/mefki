@@ -3,19 +3,92 @@
         xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
         android:layout_height="match_parent" xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/AlarmsSetingsDistance"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/AlarmSettingsDaysAndTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+                tools:text="5 min"
+                android:layout_height="wrap_content" android:id="@+id/seekBarTextTime"
+                android:layout_width="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" style="@style/AlarmItemOfList"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="32dp" android:layout_marginRight="32dp"
+                app:layout_constraintVertical_bias="0.272" android:fontFamily="@font/GillSansMTBold"
+                android:textColor="@color/colorPrimary" android:layout_marginBottom="8dp"/>
+
+        <View
+                android:layout_width="2dp" android:layout_height="30dp"
+                android:background="@color/colorPrimary"
+                android:id="@+id/view"
+                app:layout_constraintStart_toEndOf="@+id/seekBarTextMeters"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.483" app:layout_constraintEnd_toEndOf="@+id/seekBarTextTime"
+                android:layout_marginEnd="16dp" android:layout_marginRight="16dp"/>
+
+        <ImageView
+                android:id="@+id/navigation_dashboard"
+                android:title="@string/title_alarms" android:layout_height="36dp" android:layout_width="37dp"
+                app:layout_constraintStart_toEndOf="@+id/view"
+                android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/seekBarTextTime"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintVertical_bias="1.0" app:srcCompat="@drawable/ic_walking_icon"
+                android:contentDescription="@string/icon"/>
+
+        <TextView
+                android:text="@string/search_radius"
+                android:layout_height="wrap_content" android:id="@+id/seekBarTextMeters"
+                android:layout_width="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                style="@style/AlarmTextLeftItemOfList" android:textColor="@color/colorPrimary"/>
+        <TextView
+                tools:text="1000m"
+                android:layout_height="wrap_content" android:id="@+id/seekBarTextMeters3"
+                android:layout_width="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/AlarmTextLeftItemOfList" android:layout_marginTop="10dp" android:layout_marginLeft="12dp"
+                android:layout_marginStart="12dp" app:layout_constraintStart_toEndOf="@+id/seekBarTextMeters"
+                app:layout_constraintEnd_toStartOf="@+id/view" android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp" app:layout_constraintHorizontal_bias="0.428"
+                android:textColor="@color/colorPrimary" android:fontFamily="@font/GillSansMTBold"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <SeekBar
+            android:splitTrack="false"
+            android:layout_width="312dp"
+            android:layout_height="wrap_content"
+            android:progress="@drawable/progress_bar"
+            android:progressDrawable="@drawable/seekbar_style"
+            android:thumb="@drawable/custom_thumb"
+
+            android:id="@+id/seekBar"
+            style="@style/AlarmSwitchItem"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginRight="8dp" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/AlarmsSetingsDistance"/>
     <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
                                                        android:layout_height="wrap_content"
                                                        android:id="@+id/AlarmSettingsDaysAndTime"
                                                        app:layout_constraintTop_toTopOf="parent"
                                                        android:layout_marginTop="10dp">
         <TextView
-                android:text="8:30"
+                tools:text="8:30"
                 android:layout_height="wrap_content" android:id="@+id/alarm_setings_from_hour"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" style="@style/AlarmTextRightItemOfList"/>
 
         <TextView
-                android:text="10:30"
+                tools:text="10:30"
                 android:layout_height="wrap_content" android:id="@+id/alarm_setings_to_hour"
                 app:layout_constraintTop_toBottomOf="@+id/alarm_setings_from_hour"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -29,72 +102,60 @@
                 app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="1dp"/>
 
         <TextView
-                android:text="Fri, We, Mon"
+                tools:text="Fri, We, Mon"
                 android:layout_height="wrap_content" android:id="@+id/days"
                 android:layout_width="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 style="@style/AlarmTextLeftItemOfList"
-                android:layout_marginBottom="10dp" app:layout_constraintBottom_toTopOf="@+id/address"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintEnd_toStartOf="@+id/alarmSetingsVerticalLine1" android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"/>
+                android:layout_marginRight="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
-                                                       android:layout_height="wrap_content"
-                                                       android:id="@+id/AlarmsSetingsDistance"
-                                                       android:layout_marginTop="20dp"
-                                                       app:layout_constraintTop_toBottomOf="@+id/AlarmSettingsDaysAndTime"
-                                                       tools:layout_editor_absoluteX="0dp">
-
-        <TextView
-                android:text="5 min"
-                android:layout_height="match_parent" android:id="@+id/seekBarTextTime"
-                android:layout_width="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" style="@style/AlarmTextRightItemOfList"/>
-
-        <View
-                android:layout_width="3dp" android:layout_height="30dp"
-                android:background="@color/colorPrimary" app:layout_constraintEnd_toStartOf="@+id/seekBarTextTime"
-                android:layout_marginEnd="8dp" android:layout_marginRight="8dp" android:id="@+id/view"
-                app:layout_constraintStart_toEndOf="@+id/seekBarTextMeters" android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                app:layout_constraintHorizontal_bias="0.264"
-                app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-        />
-
-        <TextView
-                android:text="Search Radius: 1000m"
-                android:layout_height="match_parent" android:id="@+id/seekBarTextMeters"
-                android:layout_width="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                style="@style/AlarmTextLeftItemOfList"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <SeekBar
-            android:layout_width="match_parent"
-            android:layout_height="20dp" android:id="@+id/seekBar"
-            style="@style/AlarmSwitchItem"
-            tools:layout_editor_absoluteX="32dp"
-            android:layout_marginTop="10dp" app:layout_constraintTop_toBottomOf="@+id/AlarmsSetingsDistance"/>
     <com.google.android.gms.maps.MapView
             android:layout_width="match_parent"
             android:layout_height="200dp" android:id="@+id/alarmsMapView"
-            style="@style/AlarmSwitchItem" tools:layout_editor_absoluteX="32dp"
-            app:layout_constraintTop_toBottomOf="@+id/seekBar"/>
-
+            style="@style/AlarmSwitchItem"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/seekBar"
+            android:layout_marginEnd="32dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginRight="32dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="32dp" android:layout_marginStart="32dp"/>
     <TextView
-            android:text="Number of bikes:  - 1 +"
-            android:layout_height="wrap_content" android:id="@+id/alarmSettingsNumberOfBikes"
-            android:layout_width="match_parent"
+            android:text="@string/text_number_of_bikes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/FindNowNumberOfBikesText"
             app:layout_constraintStart_toStartOf="parent"
-            style="@style/AlarmItemOfList"
-            android:layout_marginTop="10dp" app:layout_constraintTop_toBottomOf="@+id/alarmsMapView"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_bias="0.093"/>
-
+            android:layout_marginLeft="10dp" android:layout_marginStart="10dp"
+            android:textSize="18sp" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton" android:layout_marginRight="8dp"
+            app:layout_constraintHorizontal_bias="0.41" android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/alarmsMapView"/>
+    <TextView
+            tools:text="1"
+            android:textSize="26sp"
+            android:layout_width="17dp"
+            android:layout_height="39dp" android:id="@+id/FindNowNumberOfBikesValue"
+            android:textColor="@color/colorPrimary"
+            android:fontFamily="sans-serif"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton2" android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/alarmsMapView"/>
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_plus"
+            android:id="@+id/imageButton2" android:background=" " app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="48dp" android:layout_marginRight="48dp"
+            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/alarmsMapView"
+            android:contentDescription="@string/icon"/>
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_minus"
+            android:id="@+id/imageButton" android:background="none"
+            app:layout_constraintEnd_toStartOf="@+id/FindNowNumberOfBikesValue" android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/alarmsMapView"
+            android:contentDescription="@string/icon"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
