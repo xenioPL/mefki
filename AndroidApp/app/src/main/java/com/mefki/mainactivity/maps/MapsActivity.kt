@@ -24,7 +24,10 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.mefki.mainactivity.R
+import com.mefki.mainactivity.datasource.APIImpl
+import io.reactivex.disposables.Disposable
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -46,6 +49,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private var mLocationPermissionGranted = false
     private val handler = Handler()
     private val interval : Long = 1
+    private var getMarkers : Disposable? = null
 
     private val mStatusChecker = object : Runnable {
         override fun run(){
@@ -55,6 +59,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 handler.postDelayed(this, interval)
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        getMarkers?.dispose()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,6 +92,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap) {
         mMap = map
+        getMarkers = APIImpl().getStationsLocalizations().subscribe { stationsList ->
+            for(station in stationsList) {
+                Log.e("123",station.latitude.toString())
+                mMap.addMarker(
+                    MarkerOptions()
+                        .title("sample")
+                        .position(LatLng(station.latitude.toDouble(),station.longitude.toDouble()))
+                        .snippet("titties")
+                )
+            }
+        }
 
         map.uiSettings.isScrollGesturesEnabled = false
         map.uiSettings.isZoomGesturesEnabled = false
@@ -114,6 +134,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         })
 
         getLocationPermission()
+        Log.d("123","rerrere")
         updateLocationUI()
         getDeviceLocation()
         mStatusChecker.run()
@@ -121,12 +142,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun getDeviceLocation() {
         try {
+            Log.d("123","try")
             if (mLocationPermissionGranted) {
                 val locationResult = mFusedLocationProviderClient?.lastLocation
+                Log.d("123","przed if")
                 locationResult?.addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         mLastKnownLocation = task.result
-
+                        Log.d("123","if")
                         mMap.moveCamera(
                             CameraUpdateFactory.newLatLngZoom(
                                 LatLng(
