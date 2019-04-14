@@ -3,7 +3,7 @@
               xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent" android:id="@+id/linearLayout">
 
     <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
                                                        android:layout_height="wrap_content"
@@ -53,9 +53,66 @@
             android:layout_height="20dp" android:id="@+id/seekBar2"
             style="@style/AlarmSwitchItem"
             android:layout_marginTop="10dp" app:layout_constraintTop_toBottomOf="@+id/AlarmsSetingsDistance"/>
-    <CheckBox
-            android:text=""
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            style="@style/AlarmSwitchItem"
-            android:layout_height="wrap_content" android:id="@+id/checkBox" android:checked="true"/>
+            android:layout_height="wrap_content" android:id="@+id/FindNowSearchUntilTextAndButton">
+
+        <TextView
+                android:text="Stop searching after: 00h00m"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/FindNowSearchUntil"
+                app:layout_constraintEnd_toStartOf="@+id/checkBox"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="10dp"
+                app:layout_constraintHorizontal_bias="0.201" app:layout_constraintVertical_bias="0.4"/>
+        <CheckBox
+                android:layout_width="wrap_content"
+                style="@style/AlarmSwitchItem"
+                android:layout_height="wrap_content" android:id="@+id/checkBox" android:checked="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:id="@+id/FindNowNumberOfBikes">
+
+        <TextView
+                android:text="@string/text_number_of_bikes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/FindNowNumberOfBikesText"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginLeft="8dp" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/FindNowNumberOfBikesTextButtonMinus"
+                android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
+                app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="16dp"
+                app:layout_constraintHorizontal_bias="0.48"/>
+        <Button
+                android:text="+"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/FindNowNumberOfBikesTextButtonPlus"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="32dp" android:layout_marginRight="32dp" style="?attr/borderlessButtonStyle"/>
+        <TextView
+                android:text="1"
+                android:textSize="22sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/FindNowNumberOfBikesValue"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintEnd_toStartOf="@+id/FindNowNumberOfBikesTextButtonPlus"
+                android:layout_marginRight="10dp"
+                app:layout_constraintHorizontal_bias="1.0" android:layout_marginTop="5dp"
+                app:layout_constraintTop_toTopOf="parent"
+        />
+
+        <Button
+                android:text="-"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/FindNowNumberOfBikesTextButtonMinus"
+                app:layout_constraintEnd_toStartOf="@+id/FindNowNumberOfBikesValue"
+                android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                style="?attr/borderlessButtonStyle"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
