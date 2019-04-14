@@ -26,8 +26,8 @@ class APIImpl : API{
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getAvailableBikes(vararg ids: Int): Observable<List<StationBikes>> {
-        return api.getAvailableBikes(*ids)
+    override fun getAvailableBikes(ids: String): Observable<List<StationBikes>> {
+        return api.getAvailableBikes(ids)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

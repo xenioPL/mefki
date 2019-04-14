@@ -11,5 +11,5 @@ interface API{
     fun getStationsLocalizations(): Observable<List<StationLoc>>
 
     @GET("getNumberFromStations")
-    fun getAvailableBikes(@Query("stations") vararg ids: Int): Observable<List<StationBikes>>
+    fun getAvailableBikes(@Query("stations", encoded = false) ids: String): Observable<List<StationBikes>>
 }

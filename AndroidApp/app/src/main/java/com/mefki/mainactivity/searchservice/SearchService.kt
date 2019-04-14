@@ -10,12 +10,16 @@ import android.os.Build
 import android.os.Handler
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.mefki.mainactivity.R
 import android.app.PendingIntent
 import com.mefki.mainactivity.MainActivity
 import com.mefki.mainactivity.datasource.API
 import com.mefki.mainactivity.datasource.APIImpl
 import io.reactivex.disposables.Disposable
+import android.location.Location
+import com.mefki.mainactivity.R
+import com.mefki.mainactivity.datamodel.StationLoc
+import java.util.ArrayList
+
 
 class SearchService: Service(){
     private var notificationManager: NotificationManager? = null
@@ -32,20 +36,35 @@ class SearchService: Service(){
         showNotification(getString(R.string.search_service_notification_title))
     }
 
+    private var myRadius: Int? = null
+    private lateinit var myloc: Location
+    private lateinit var stationss: List<StationLoc>
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        val handler = Handler()
-        val runnable = object: Runnable{
-            override fun run() {
-                if(!waitingForResponse) {
-                    checkStationsForBikes()
-                    waitingForResponse = true
-                }
-                if(!bikeFound) {
-                    handler.postDelayed(this, 1000)
+        val extras = intent.extras
+        myRadius = extras!!.getInt("radius")
+        val lon = extras!!.getDouble("lon")
+        val lat = extras!!.getDouble("lat")
+        val mylocc = Location("")
+        mylocc.latitude = lat
+        mylocc.longitude = lon
+        myloc = mylocc
+        api.getStationsLocalizations().subscribe{ stations->
+            stationss = stations
+            val handler = Handler()
+            val runnable = object: Runnable{
+                override fun run() {
+                    if(!waitingForResponse) {
+                        checkStationsForBikes()
+                        waitingForResponse = true
+                    }
+                    if(!bikeFound) {
+                        handler.postDelayed(this, 1000)
+                    }
                 }
             }
+            runnable.run()
         }
-        runnable.run()
+
         return Service.START_STICKY
     }
 
@@ -54,7 +73,26 @@ class SearchService: Service(){
     private var waitingForResponse = false
     private var bikeFound = false
     private fun checkStationsForBikes(){
-        disposable = api.getAvailableBikes(11111, 11110).subscribe{bikes->
+        val list = ArrayList<Int>()
+        list.add(2)
+
+        for(station in stationss){
+            val loc2 = Location("")
+            loc2.latitude = station.latitude.toDouble()
+            loc2.longitude = station.longitude.toDouble()
+            val distance = myloc.distanceTo(loc2)
+            if(distance < myRadius!!){
+                list.add(station.id)
+            }
+        }
+        val maplist = list.map { it}.toIntArray()
+        var string = ""
+        for(id in maplist){
+            string+=id.toString()
+            string+=","
+        }
+        string = string.dropLast(1)
+        disposable = api.getAvailableBikes(string).subscribe{bikes->
             for(bike in bikes){
                 if(bike.bikesAvailable > 0){
                     bikeFound = true
@@ -64,6 +102,7 @@ class SearchService: Service(){
             }
         }
         waitingForResponse = false
+
     }
 
     override fun onDestroy() {

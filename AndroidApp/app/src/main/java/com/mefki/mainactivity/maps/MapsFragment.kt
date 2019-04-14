@@ -55,7 +55,11 @@ class MapsFragment: Fragment(), OnMapReadyCallback {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mView = inflater.inflate(R.layout.fragment_maps, container, false)
         mView.findNowButton.setOnClickListener {
-            requireActivity().startService(Intent(requireContext(), SearchService::class.java))
+            val intent = Intent(requireContext(), SearchService::class.java)
+            intent.putExtra("radius", radius)
+            intent.putExtra("lat", mLastKnownLocation!!.latitude)
+            intent.putExtra("lon", mLastKnownLocation!!.longitude)
+            requireActivity().startService(intent)
         }
         searchBar = mView.seekBar2
         distance = mView.seekBarTextMeters3
