@@ -1,3 +1,8 @@
 package com.mefki.mainactivity.datamodel
 
-data class StationBikes(val id: Int, val bikesAvailable: Int)
+import com.google.gson.annotations.SerializedName
+
+data class StationBikes(
+    @SerializedName("id")  val id: Int,
+    @SerializedName("number") val bikesAvailable: Int
+)
