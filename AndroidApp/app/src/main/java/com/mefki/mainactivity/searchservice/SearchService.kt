@@ -13,6 +13,9 @@ import androidx.core.app.NotificationManagerCompat
 import com.mefki.mainactivity.R
 import android.app.PendingIntent
 import com.mefki.mainactivity.MainActivity
+import com.mefki.mainactivity.datasource.API
+import com.mefki.mainactivity.datasource.APIImpl
+import io.reactivex.disposables.Disposable
 
 class SearchService: Service(){
     private var notificationManager: NotificationManager? = null
@@ -26,18 +29,41 @@ class SearchService: Service(){
 
     override fun onCreate() {
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        showNotification()
+        showNotification(getString(R.string.search_service_notification_title))
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         val handler = Handler()
         val runnable = object: Runnable{
             override fun run() {
-                handler.postDelayed(this, 1000)
+                if(!waitingForResponse) {
+                    checkStationsForBikes()
+                    waitingForResponse = true
+                }
+                if(!bikeFound) {
+                    handler.postDelayed(this, 1000)
+                }
             }
         }
         runnable.run()
         return Service.START_STICKY
+    }
+
+    private var api: API = APIImpl()
+    private lateinit var disposable: Disposable
+    private var waitingForResponse = false
+    private var bikeFound = false
+    private fun checkStationsForBikes(){
+        disposable = api.getAvailableBikes(11111, 11110).subscribe{bikes->
+            for(bike in bikes){
+                if(bike.bikesAvailable > 0){
+                    bikeFound = true
+                    showNotification("Found a bike!")
+                    break
+                }
+            }
+        }
+        waitingForResponse = false
     }
 
     override fun onDestroy() {
@@ -50,13 +76,11 @@ class SearchService: Service(){
 
     private val mBinder = LocalBinder()
 
-    private fun showNotification() {
+    private fun showNotification(title: String) {
         val channelID = getString(R.string.search_service_notification_channel_id)
         val smallIcon = R.drawable.ic_logo
         val largeIcon = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher_round
         )
-        val contentTitle = getString(R.string.search_service_notification_title)
-        val contentText = getString(R.string.search_service_notification_description)
         val priority = NotificationCompat.PRIORITY_DEFAULT
 
         val contentIntent = PendingIntent.getActivity(
@@ -67,8 +91,7 @@ class SearchService: Service(){
         val notificationCompat = NotificationCompat.Builder(this, channelID)
             .setSmallIcon(smallIcon)
             .setLargeIcon(largeIcon)
-            .setContentTitle(contentTitle)
-            .setContentText(contentText)
+            .setContentTitle(title)
             .setPriority(priority)
             .setOngoing(true)
             .setContentIntent(contentIntent)
