@@ -1,11 +1,10 @@
 package com.mefki.mainactivity.maps
 
-import android.annotation.SuppressLint
-import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -15,19 +14,16 @@ import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AlertDialog
 
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.places.PlaceDetectionClient
-import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.tasks.OnCompleteListener
 import com.mefki.mainactivity.R
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -38,10 +34,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     // The entry point to the Fused Location Provider.
     private var mFusedLocationProviderClient: FusedLocationProviderClient? = null
 
-    // The entry points to the Places API.
-    //private var mGeoDataClient: GeoDataClient? = null
-    private var mPlaceDetectionClient: PlaceDetectionClient? = null
-
     // The geographical location where the device is currently located. That is, the last-known
     // location retrieved by the Fused Location Provider.
     private var mLastKnownLocation: Location? = null
@@ -51,21 +43,30 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private val mDefaultLocation = LatLng(-33.8523341, 151.2106085)
     private val DEFAULT_ZOOM = 15
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
-    private var mLocationPermissionGranted: Boolean = false
+    private var mLocationPermissionGranted = false
+    private val handler = Handler()
+    private val interval : Long = 1
 
-    // Used for selecting the current place.
-    private val M_MAX_ENTRIES = 5
-    private lateinit var mLikelyPlaceNames: Array<String>
-    private lateinit var mLikelyPlaceAddresses: Array<String>
-    private lateinit var mLikelyPlaceAttributions: Array<String>
-    private var mLikelyPlaceLatLngs: ArrayList<LatLng> = arrayListOf()
+    private val mStatusChecker = object : Runnable {
+        override fun run(){
+            try {
+                getDeviceLocation()
+            } finally {
+                handler.postDelayed(this, interval)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        // Construct a FusedLocationProviderClient.
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -73,20 +74,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         return true
     }
 
-    /**
-     * Handles a click on the menu option to get a place.
-     * @param item The menu item to handle.
-     * @return Boolean.
-     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.option_get_place) {
-            showCurrentPlace()
+
         }
         return true
     }
 
     override fun onMapReady(map: GoogleMap) {
         mMap = map
+
+        map.uiSettings.isScrollGesturesEnabled = false
+        map.uiSettings.isZoomGesturesEnabled = false
 
         // Use a custom info window adapter to handle multiple lines of text in the
         // info window contents.
@@ -117,6 +116,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         getLocationPermission()
         updateLocationUI()
         getDeviceLocation()
+        mStatusChecker.run()
     }
 
     private fun getDeviceLocation() {
@@ -207,108 +207,5 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             Log.e("Exception: %s", e.message)
         }
 
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun showCurrentPlace() {
-        if (mLocationPermissionGranted) {
-            // Get the likely places - that is, the businesses and other points of interest that
-            // are the best match for the device's current location.
-            val placeResult = mPlaceDetectionClient?.getCurrentPlace(null)
-            placeResult?.addOnCompleteListener { task ->
-                if (task.isSuccessful && task.result != null) {
-                    val likelyPlaces: PlaceLikelihoodBufferResponse = task.result!!
-
-                    // Set the count, handling cases where less than 5 entries are returned.
-                    val count: Int
-                    if (likelyPlaces.count < M_MAX_ENTRIES) {
-                        count = likelyPlaces.count
-                    } else {
-                        count = M_MAX_ENTRIES
-                    }
-
-                    var i = 0
-                    mLikelyPlaceNames = Array(count) {""}
-                    mLikelyPlaceAddresses = Array(count) {""}
-                    mLikelyPlaceAttributions = Array(count) {""}
-                    mLikelyPlaceLatLngs = ArrayList(count)
-
-                    for (placeLikelihood in likelyPlaces) {
-                        // Build a list of likely places to show the user.
-                        mLikelyPlaceNames[i] = placeLikelihood.place.name.toString()
-                        mLikelyPlaceAddresses[i] = placeLikelihood.place
-                            .address as String
-                        mLikelyPlaceAttributions[i] = placeLikelihood.place
-                            .attributions as String
-                        mLikelyPlaceLatLngs[i] = placeLikelihood.place.latLng
-
-                        i++
-                        if (i > count - 1) {
-                            break
-                        }
-                    }
-
-                    // Release the place likelihood buffer, to avoid memory leaks.
-                    likelyPlaces.release()
-
-                    // Show a dialog offering the user the list of likely places, and add a
-                    // marker at the selected place.
-                    openPlacesDialog()
-
-                } else {
-                    Log.e(TAG, "Exception: %s", task.exception)
-                }
-            }
-        } else {
-            // The user has not granted permission.
-            Log.i(TAG, "The user did not grant location permission.")
-
-            // Add a default marker, because the user hasn't selected a place.
-            mMap.addMarker(
-                MarkerOptions()
-                    .title(getString(R.string.default_info_title))
-                    .position(mDefaultLocation)
-                    .snippet(getString(R.string.default_info_snippet))
-            )
-
-            // Prompt the user for permission.
-            getLocationPermission()
-        }
-    }
-
-    /**
-     * Displays a form allowing the user to select a place from a list of likely places.
-     */
-    private fun openPlacesDialog() {
-        // Ask the user to choose the place where they are now.
-        val listener = DialogInterface.OnClickListener { dialog, which ->
-            // The "which" argument contains the position of the selected item.
-            val markerLatLng : LatLng = mLikelyPlaceLatLngs[which]
-            var markerSnippet : String? = mLikelyPlaceAddresses[which]
-            markerSnippet = markerSnippet + "\n" + mLikelyPlaceAttributions[which]
-
-            // Add a marker for the selected place, with an info window
-            // showing information about that place.
-            mMap.addMarker(
-                MarkerOptions()
-                    .title(mLikelyPlaceNames[which])
-                    .position(markerLatLng)
-                    .snippet(markerSnippet)
-            )
-
-            // Position the map's camera at the location of the marker.
-            mMap.moveCamera(
-                CameraUpdateFactory.newLatLngZoom(
-                    markerLatLng,
-                    DEFAULT_ZOOM.toFloat()
-                )
-            )
-        }
-
-        // Display the dialog.
-        val dialog = AlertDialog.Builder(this)
-            .setTitle(R.string.pick_place)
-            .setItems(mLikelyPlaceNames, listener)
-            .show()
     }
 }
