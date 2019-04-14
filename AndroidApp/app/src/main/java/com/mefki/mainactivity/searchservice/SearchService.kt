@@ -8,10 +8,11 @@ import android.graphics.BitmapFactory
 import android.os.Binder
 import android.os.Build
 import android.os.Handler
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.mefki.mainactivity.R
+import android.app.PendingIntent
+import com.mefki.mainactivity.MainActivity
 
 class SearchService: Service(){
     private var notificationManager: NotificationManager? = null
@@ -32,12 +33,11 @@ class SearchService: Service(){
         val handler = Handler()
         val runnable = object: Runnable{
             override fun run() {
-                Log.d("it just works","dab")
                 handler.postDelayed(this, 1000)
             }
         }
         runnable.run()
-        return Service.START_NOT_STICKY
+        return Service.START_STICKY
     }
 
     override fun onDestroy() {
@@ -53,10 +53,16 @@ class SearchService: Service(){
     private fun showNotification() {
         val channelID = getString(R.string.search_service_notification_channel_id)
         val smallIcon = R.drawable.ic_logo
-        val largeIcon = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
+        val largeIcon = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher_round
+        )
         val contentTitle = getString(R.string.search_service_notification_title)
         val contentText = getString(R.string.search_service_notification_description)
         val priority = NotificationCompat.PRIORITY_DEFAULT
+
+        val contentIntent = PendingIntent.getActivity(
+            this, 0,
+            Intent(this, MainActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT
+        )
 
         val notificationCompat = NotificationCompat.Builder(this, channelID)
             .setSmallIcon(smallIcon)
@@ -65,6 +71,7 @@ class SearchService: Service(){
             .setContentText(contentText)
             .setPriority(priority)
             .setOngoing(true)
+            .setContentIntent(contentIntent)
             .build()
 
         val notificationID = 1
