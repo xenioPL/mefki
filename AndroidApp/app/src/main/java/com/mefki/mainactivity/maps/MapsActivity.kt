@@ -21,13 +21,11 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.mefki.mainactivity.R
 import com.mefki.mainactivity.datasource.APIImpl
 import io.reactivex.disposables.Disposable
+import kotlin.math.sqrt
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -50,6 +48,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private val handler = Handler()
     private val interval : Long = 1
     private var getMarkers : Disposable? = null
+
+    private var circle: Circle? = null
 
     private val mStatusChecker = object : Runnable {
         override fun run(){
@@ -94,7 +94,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = map
         getMarkers = APIImpl().getStationsLocalizations().subscribe { stationsList ->
             for(station in stationsList) {
-                Log.e("123",station.latitude.toString())
                 mMap.addMarker(
                     MarkerOptions()
                         .title("sample")
@@ -103,6 +102,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 )
             }
         }
+
+        circle = mMap.addCircle(
+            CircleOptions().apply {
+                center(LatLng(0.0,0.0))
+                radius(100.0)
+                strokeWidth(0.0f)
+                //strokeColor(strokeColorArgb)
+                fillColor(0x503db4ff)
+                //strokePattern(getSelectedPattern(strokePatternSpinner.selectedItemPosition))
+            })
 
         map.uiSettings.isScrollGesturesEnabled = false
         map.uiSettings.isZoomGesturesEnabled = false
@@ -134,7 +143,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         })
 
         getLocationPermission()
-        Log.d("123","rerrere")
         updateLocationUI()
         getDeviceLocation()
         mStatusChecker.run()
@@ -142,22 +150,32 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun getDeviceLocation() {
         try {
-            Log.d("123","try")
             if (mLocationPermissionGranted) {
                 val locationResult = mFusedLocationProviderClient?.lastLocation
-                Log.d("123","przed if")
                 locationResult?.addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         mLastKnownLocation = task.result
-                        Log.d("123","if")
+                        val zoomRadius = 900
+
+                        val zoomFinal = when(zoomRadius){
+                            in 0..200 -> 16
+                            in 201..500 -> 15
+                            in 501..950 -> 14
+                            in 951..Int.MAX_VALUE ->13
+                            else -> 12
+                        }
+
                         mMap.moveCamera(
                             CameraUpdateFactory.newLatLngZoom(
                                 LatLng(
                                     mLastKnownLocation!!.latitude,
                                     mLastKnownLocation!!.longitude
-                                ), DEFAULT_ZOOM.toFloat()
+                                ), zoomFinal.toFloat()
                             )
                         )
+
+                        circle?.center = LatLng(mLastKnownLocation!!.latitude, mLastKnownLocation!!.longitude)
+                        circle?.radius = zoomRadius.toDouble()
                     } else {
                         Log.d(TAG, "Current location is null. Using defaults.")
                         Log.e(TAG, "Exception: %s", task.exception)
@@ -217,12 +235,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun updateLocationUI() {
         try {
+            mMap.uiSettings.isMyLocationButtonEnabled = false
             if (mLocationPermissionGranted) {
                 mMap.isMyLocationEnabled = true
-                mMap.uiSettings.isMyLocationButtonEnabled = true
             } else {
                 mMap.isMyLocationEnabled = false
-                mMap.uiSettings.isMyLocationButtonEnabled = false
                 mLastKnownLocation = null
                 getLocationPermission()
             }
