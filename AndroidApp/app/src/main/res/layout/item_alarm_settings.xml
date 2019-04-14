@@ -13,7 +13,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-                android:text="5 min"
+                tools:text="5 min"
                 android:layout_height="wrap_content" android:id="@+id/seekBarTextTime"
                 android:layout_width="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
@@ -40,17 +40,18 @@
                 android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/seekBarTextTime"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintVertical_bias="1.0" app:srcCompat="@drawable/ic_walking_icon"/>
+                app:layout_constraintVertical_bias="1.0" app:srcCompat="@drawable/ic_walking_icon"
+                android:contentDescription="@string/icon"/>
 
         <TextView
-                android:text="Search radius:"
+                android:text="@string/search_radius"
                 android:layout_height="wrap_content" android:id="@+id/seekBarTextMeters"
                 android:layout_width="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 style="@style/AlarmTextLeftItemOfList" android:textColor="@color/colorPrimary"/>
         <TextView
-                android:text="1000m"
+                tools:text="1000m"
                 android:layout_height="wrap_content" android:id="@+id/seekBarTextMeters3"
                 android:layout_width="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
@@ -81,13 +82,13 @@
                                                        app:layout_constraintTop_toTopOf="parent"
                                                        android:layout_marginTop="10dp">
         <TextView
-                android:text="8:30"
+                tools:text="8:30"
                 android:layout_height="wrap_content" android:id="@+id/alarm_setings_from_hour"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" style="@style/AlarmTextRightItemOfList"/>
 
         <TextView
-                android:text="10:30"
+                tools:text="10:30"
                 android:layout_height="wrap_content" android:id="@+id/alarm_setings_to_hour"
                 app:layout_constraintTop_toBottomOf="@+id/alarm_setings_from_hour"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -101,7 +102,7 @@
                 app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="1dp"/>
 
         <TextView
-                android:text="Fri, We, Mon"
+                tools:text="Fri, We, Mon"
                 android:layout_height="wrap_content" android:id="@+id/days"
                 android:layout_width="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
@@ -120,6 +121,41 @@
             android:layout_marginEnd="32dp" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginRight="32dp" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginLeft="32dp" android:layout_marginStart="32dp"/>
+    <TextView
+            android:text="@string/text_number_of_bikes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/FindNowNumberOfBikesText"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="10dp" android:layout_marginStart="10dp"
+            android:textSize="18sp" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton" android:layout_marginRight="8dp"
+            app:layout_constraintHorizontal_bias="0.41" android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/alarmsMapView"/>
+    <TextView
+            tools:text="1"
+            android:textSize="26sp"
+            android:layout_width="17dp"
+            android:layout_height="39dp" android:id="@+id/FindNowNumberOfBikesValue"
+            android:textColor="@color/colorPrimary"
+            android:fontFamily="sans-serif"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton2" android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/alarmsMapView"/>
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_plus"
+            android:id="@+id/imageButton2" android:background=" " app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="48dp" android:layout_marginRight="48dp"
+            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/alarmsMapView"
+            android:contentDescription="@string/icon"/>
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_minus"
+            android:id="@+id/imageButton" android:background="none"
+            app:layout_constraintEnd_toStartOf="@+id/FindNowNumberOfBikesValue" android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/alarmsMapView"
+            android:contentDescription="@string/icon"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
