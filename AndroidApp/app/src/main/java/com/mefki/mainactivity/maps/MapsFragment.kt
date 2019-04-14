@@ -2,19 +2,16 @@ package com.mefki.mainactivity.maps
 
 import android.content.pm.PackageManager
 import android.location.Location
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-
+import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -22,24 +19,17 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.gms.tasks.Task
 import com.mefki.mainactivity.R
 import com.mefki.mainactivity.datasource.APIImpl
 import io.reactivex.disposables.Disposable
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsFragment: Fragment(), OnMapReadyCallback {
 
-    private val TAG = MapsActivity::class.java.simpleName
+    private val TAG = MapsFragment::class.java.simpleName
     private lateinit var mMap: GoogleMap
-
-    // The entry point to the Fused Location Provider.
     private var mFusedLocationProviderClient: FusedLocationProviderClient? = null
-
-    // The geographical location where the device is currently located. That is, the last-known
-    // location retrieved by the Fused Location Provider.
     private var mLastKnownLocation: Location? = null
-
-    // A default location (Sydney, Australia) and default zoom to use when location permission is
-    // not granted.
     private val mDefaultLocation = LatLng(-33.8523341, 151.2106085)
     private val DEFAULT_ZOOM = 15
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
@@ -48,6 +38,28 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private val interval : Long = 1000
     private var getMarkers : Disposable? = null
     private var circle: Circle? = null
+    private var locationResult: Task<Location>? = null
+
+    private lateinit var mView: View
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        mView = inflater.inflate(R.layout.fragment_maps, container, false)
+        return mView
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+    }
+
+    override fun onPause() {
+        super.onPause()
+        handler.removeCallbacks(mStatusChecker)
+    }
 
     private val mStatusChecker = object : Runnable {
         override fun run(){
@@ -62,30 +74,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onDestroy() {
         super.onDestroy()
         getMarkers?.dispose()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_maps)
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-
-        // Construct a FusedLocationProviderClient.
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.current_place_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.option_get_place) {
-
-        }
-        return true
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -111,29 +99,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 center(LatLng(0.0,0.0))
                 radius(100.0)
                 strokeWidth(0.0f)
-                //strokeColor(strokeColorArgb)
                 fillColor(0x503db4ff)
-                //strokePattern(getSelectedPattern(strokePatternSpinner.selectedItemPosition))
             })
 
         map.uiSettings.isScrollGesturesEnabled = false
         map.uiSettings.isZoomGesturesEnabled = false
         map.uiSettings.isRotateGesturesEnabled = false
 
-        // Use a custom info window adapter to handle multiple lines of text in the
-        // info window contents.
         mMap.setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter {
 
-            // Return null here, so that getInfoContents() is called next.
-            override fun getInfoWindow(arg0: Marker): View? {
-                return null
-            }
+            override fun getInfoWindow(arg0: Marker) = null
 
             override fun getInfoContents(marker: Marker): View {
-                // Inflate the layouts for the info window, title and snippet.
                 val infoWindow = layoutInflater.inflate(
                     R.layout.custom_info_contents,
-                    findViewById<FrameLayout>(R.id.map), false
+                    mView.findViewById(R.id.map), false
                 )
 
                 val title = infoWindow.findViewById(R.id.title) as TextView
@@ -155,8 +135,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun getDeviceLocation() {
         try {
             if (mLocationPermissionGranted) {
-                val locationResult = mFusedLocationProviderClient?.lastLocation
-                locationResult?.addOnCompleteListener(this) { task ->
+                locationResult = mFusedLocationProviderClient?.lastLocation
+                locationResult?.addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
                         mLastKnownLocation = task.result
                         val zoomRadius = 900
@@ -197,29 +177,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-
-    /**
-     * Prompts the user for permission to use the device location.
-     */
     private fun getLocationPermission() {
         if (ContextCompat.checkSelfPermission(
-                this.applicationContext,
+                requireContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             mLocationPermissionGranted = true
         } else {
             ActivityCompat.requestPermissions(
-                this,
+                requireActivity(),
                 arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
                 PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
             )
         }
     }
 
-    /**
-     * Handles the result of the request for location permissions.
-     */
     override fun onRequestPermissionsResult(
         requestCode: Int,
         @NonNull permissions: Array<String>,
@@ -250,6 +223,5 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         } catch (e: SecurityException) {
             Log.e("Exception: %s", e.message)
         }
-
     }
 }
