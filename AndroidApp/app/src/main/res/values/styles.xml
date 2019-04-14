@@ -6,6 +6,21 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:textViewStyle">@style/GillSansMTTextViewStyle</item>
+        <item name="android:buttonStyle">@style/GillSansMTButtonStyle</item>
+
+
+    </style>
+
+    <style name="GillSansMTTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/GillSansMT</item>
+    </style>
+
+    <style name="GillSansMTButtonStyle" parent="android:Widget.Holo.Button">
+        <item name="android:fontFamily">@font/GillSansMTBold</item>
+        <item name="android:background">color: #ffffffff </item>
+        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
     <style name="AlarmTextRightItemOfList" parent="@style/AlarmItemOfList">
@@ -33,5 +48,7 @@
         <item name="colorPrimaryDark">#FFF</item>
         <item name="colorAccent">@color/MevoRed</item>
     </style>
+
+
 
 </resources>

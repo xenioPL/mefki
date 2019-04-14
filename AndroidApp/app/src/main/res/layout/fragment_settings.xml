@@ -38,7 +38,7 @@
             android:layout_centerVertical="true"
 
             android:text="chooseSound"
-            android:textColor="#ACACAC"
+
 
             android:textSize="12sp"
             android:padding="24dp"
@@ -71,7 +71,7 @@
             android:layout_below="@id/textSound"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/checkBoxSound" android:layout_marginTop="17dp"
+            android:layout_height="wrap_content" android:id="@+id/checkBoxVibration" android:layout_marginTop="17dp"
             android:layout_marginRight="20dp"/>
 
     <TextView
@@ -91,7 +91,7 @@
             android:layout_below="@id/textVibration"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/checkBoxSound" android:layout_marginTop="17dp"
+            android:layout_height="wrap_content" android:id="@+id/checkBoxOverlay" android:layout_marginTop="17dp"
             android:layout_marginRight="20dp"/>
 
     <TextView
@@ -109,8 +109,8 @@
             android:layout_below="@id/textOverlay"
             android:layout_centerVertical="true"
 
-            android:text="chooseSound"
-            android:textColor="#ACACAC"
+            android:text="chooseTurnOffTime"
+
 
             android:textSize="12sp"
             android:padding="24dp"
@@ -124,7 +124,7 @@
             android:layout_below="@id/textOverlay"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/checkBoxSound" android:layout_marginTop="17dp"
+            android:layout_height="wrap_content" android:id="@+id/checkBoxTurnOff" android:layout_marginTop="17dp"
             android:layout_marginRight="20dp"/>
 
 
