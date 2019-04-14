@@ -8,22 +8,23 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AlarmTextRightItemOfList" parent="@style/AlarmItemOfList">
-        <!--<item name="android:layout_marginEnd">@dimen/margin_alarm</item>-->
-        <item name="android:textSize">30sp</item>
-        <item name="android:layout_width">150dp</item>
-    </style>
-
-    <style name="AlarmTextLeftItemOfList" parent="@style/AlarmItemOfList">
-        <item name="android:layout_width">200dp</item>
-    </style>
-
     <style name="AlarmItemOfList">
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textSize">22sp</item>
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginLeft">@dimen/margin_alarm</item>
         <item name="android:layout_marginRight">@dimen/margin_alarm</item>
+    </style>
+
+
+    <style name="AlarmTextRightItemOfList" parent="@style/AlarmItemOfList">
+        <!--<item name="android:layout_marginEnd">@dimen/margin_alarm</item>-->
+        <item name="android:textSize">30sp</item>
+        <item name="android:layout_width">100dp</item>
+    </style>
+
+    <style name="AlarmTextLeftItemOfList" parent="@style/AlarmItemOfList">
+        <item name="android:layout_width">200dp</item>
     </style>
 
     <style name="AlarmSwitchItem" parent="@style/AlarmItemOfList">
