@@ -63,7 +63,8 @@
                 style="@style/AlarmTextLeftItemOfList" android:textColor="@color/colorPrimary"/>
         <TextView
                 android:text="1000m"
-                android:layout_height="wrap_content" android:id="@+id/seekBarTextMeters3"
+                android:layout_height="wrap_content"
+                android:id="@+id/seekBarTextMeters3"
                 android:layout_width="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 style="@style/AlarmTextLeftItemOfList" android:layout_marginTop="10dp" android:layout_marginLeft="12dp"
@@ -72,6 +73,8 @@
                 android:layout_marginRight="16dp" app:layout_constraintHorizontal_bias="0.428"
                 android:textColor="@color/colorPrimary" android:fontFamily="@font/gillsansmtbold_ttf"/>
         <androidx.appcompat.widget.AppCompatSeekBar
+                android:min="200"
+                android:max="2000"
                 android:splitTrack="false"
                 android:layout_width="312dp"
                 android:layout_height="wrap_content"
