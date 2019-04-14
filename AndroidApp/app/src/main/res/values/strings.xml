@@ -16,4 +16,6 @@
     <string name="search_service_notification_description">Searching for bikes…</string>
     <string name="search_service_notification_channel_name">SearchNotificationChannelName</string>
     <string name="search_service_notification_channel_id">SearchNotificationChannelID</string>
+    <string name="search_radius">Search radius:</string>
+    <string name="icon">icon</string>
 </resources>
