@@ -7,6 +7,7 @@ import android.os.Handler
 import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
@@ -23,6 +24,7 @@ import com.google.android.gms.tasks.Task
 import com.mefki.mainactivity.R
 import com.mefki.mainactivity.datasource.APIImpl
 import io.reactivex.disposables.Disposable
+import kotlinx.android.synthetic.main.fragment_find_now_top.view.*
 import kotlinx.android.synthetic.main.fragment_find_now_bottom_button.view.*
 import android.content.Intent
 import com.mefki.mainactivity.searchservice.SearchService
@@ -43,6 +45,10 @@ class MapsFragment: Fragment(), OnMapReadyCallback {
     private var getMarkers : Disposable? = null
     private var circle: Circle? = null
     private var locationResult: Task<Location>? = null
+    private var searchBar : SeekBar? = null
+    private var distance : TextView? = null
+    private var time : TextView? = null
+    private var radius = 500
 
     private lateinit var mView: View
 
@@ -51,6 +57,25 @@ class MapsFragment: Fragment(), OnMapReadyCallback {
         mView.findNowButton.setOnClickListener {
             requireActivity().startService(Intent(requireContext(), SearchService::class.java))
         }
+        searchBar = mView.seekBar2
+        distance = mView.seekBarTextMeters3
+        time = mView.seekBarTextTime
+        searchBar?.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                distance?.text = progress.toString() +"m"//To change body of created functions use File | Settings | File Templates.
+                time?.text = (progress*0.01).toInt().toString() +"min"
+                radius = progress
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                 //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                //To change body of created functions use File | Settings | File Templates.
+            }
+        })
+
         return mView
     }
 
@@ -146,9 +171,8 @@ class MapsFragment: Fragment(), OnMapReadyCallback {
                 locationResult?.addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
                         mLastKnownLocation = task.result
-                        val zoomRadius = 900
 
-                        val zoomFinal = when(zoomRadius){
+                        val zoomFinal = when(radius){
                             in 0..200 -> 16
                             in 201..500 -> 15
                             in 501..950 -> 14
@@ -166,7 +190,7 @@ class MapsFragment: Fragment(), OnMapReadyCallback {
                         )
 
                         circle?.center = LatLng(mLastKnownLocation!!.latitude, mLastKnownLocation!!.longitude)
-                        circle?.radius = zoomRadius.toDouble()
+                        circle?.radius = radius.toDouble()
                     } else {
                         Log.d(TAG, "Current location is null. Using defaults.")
                         Log.e(TAG, "Exception: %s", task.exception)
