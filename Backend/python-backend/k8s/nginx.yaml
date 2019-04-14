@@ -1,20 +1,20 @@
 apiVersion: v1
 kind: ReplicationController
 metadata:
-  name: mefki
+  name: mefki2
 spec:
   replicas: 1
   selector:
-    app: mefki
+    app: mefki2
   template:
     metadata:
-      name: mefki
+      name: mefki2
       labels:
-        app: mefki
+        app: mefki2
     spec:
       containers:
-        - name: mefki
-          image: gcr.io/protean-cistern-237514/mefki:v4
+        - name: mefki2
+          image: gcr.io/protean-cistern-237514/mefki2:v4
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -24,13 +24,13 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    name: mefkiservice
-  name: mefkiservice
+    name: mefki2service
+  name: mefki2service
 spec:
   ports:
     # The port that this service should serve on.
     - port: 80
   # Label keys and values that must match in order to receive traffic for this service.
   selector:
-    app: mefki
+    app: mefki2
   type: LoadBalancer
