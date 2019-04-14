@@ -12,7 +12,7 @@
     <string name="title_alarms">Alarms</string>
     <string name="title_settings">Settings</string>
     <string name="search_service_notification_name">SearchNotification</string>
-    <string name="search_service_notification_title">Title</string>
+    <string name="search_service_notification_title">Searching for bikes</string>
     <string name="search_service_notification_description">Searching for bikes…</string>
     <string name="search_service_notification_channel_name">SearchNotificationChannelName</string>
     <string name="search_service_notification_channel_id">SearchNotificationChannelID</string>

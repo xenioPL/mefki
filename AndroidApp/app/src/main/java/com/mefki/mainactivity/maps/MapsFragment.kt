@@ -23,6 +23,10 @@ import com.google.android.gms.tasks.Task
 import com.mefki.mainactivity.R
 import com.mefki.mainactivity.datasource.APIImpl
 import io.reactivex.disposables.Disposable
+import kotlinx.android.synthetic.main.fragment_find_now_bottom_button.view.*
+import android.content.Intent
+import com.mefki.mainactivity.searchservice.SearchService
+
 
 class MapsFragment: Fragment(), OnMapReadyCallback {
 
@@ -44,6 +48,9 @@ class MapsFragment: Fragment(), OnMapReadyCallback {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mView = inflater.inflate(R.layout.fragment_maps, container, false)
+        mView.findNowButton.setOnClickListener {
+            requireActivity().startService(Intent(requireContext(), SearchService::class.java))
+        }
         return mView
     }
 
