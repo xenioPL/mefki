@@ -1,3 +1,9 @@
 package com.mefki.mainactivity.datamodel
 
-data class StationLoc(val id: Int, val longitude: Float, val latitude: Float)
+import com.google.gson.annotations.SerializedName
+
+data class StationLoc(
+    @SerializedName("id")  val id: Int,
+    @SerializedName("lon") val longitude: Float,
+    @SerializedName("lat") val latitude: Float
+)

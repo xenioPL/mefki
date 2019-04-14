@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.mefki.mainactivity.maps.MapsActivity
 import androidx.fragment.app.Fragment
 import com.mefki.mainactivity.alarms.AlarmsFragment
+import com.mefki.mainactivity.searchservice.SearchService
 import kotlinx.android.synthetic.main.activity_main.*
 
 class
@@ -15,6 +16,10 @@ MainActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_find_now -> {
+
+                val intent = Intent(this, MapsActivity::class.java)
+                startActivity(intent)
+
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_alarms -> {
@@ -22,6 +27,8 @@ MainActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_settings -> {
+                val service = Intent(this, SearchService::class.java)
+                startService(service)
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -31,9 +38,6 @@ MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val intent = Intent(this, MapsActivity::class.java)
-        startActivity(intent)
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
