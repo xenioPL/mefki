@@ -23,6 +23,17 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
+    <style name="weekdayOff" parent="android:Widget.Holo.Button">
+        <item name="android:fontFamily">@font/GillSansMTBold</item>
+        <item name="android:background">color: #ffffffff </item>
+        <item name="android:textColor">@color/colorPrimary</item>
+
+        <item name="android:innerRadius">0dp</item>
+        <item name ="android:shape">ring</item>
+        <item name="android:thicknessRatio">1.9</item>
+        <item name= "android:useLevel">false</item>
+    </style>
+
     <style name="AlarmItemOfList">
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textSize">22sp</item>
@@ -48,6 +59,16 @@
         <item name="colorPrimary">@color/MevoLightBlue</item>
         <item name="colorPrimaryDark">#FFF</item>
         <item name="colorAccent">@color/MevoRed</item>
+    </style>
+
+    <style name="weekdayOff">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+               android:innerRadius="0dp"
+               android:shape="ring"
+               android:thicknessRatio="1.9"
+               android:useLevel="false" >
+
+
     </style>
 
 
