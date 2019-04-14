@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MainActivity</string>
+    <string name="app_name">Revo</string>
     <string name="item_alarm_radius">Radius: %1$dm</string>
     <string name="item_alarm_name">Alarm %1$d</string>
     <string name="default_info_title">Default Location</string>
