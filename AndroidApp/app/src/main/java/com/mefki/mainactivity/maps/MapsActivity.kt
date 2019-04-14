@@ -25,7 +25,6 @@ import com.google.android.gms.maps.model.*
 import com.mefki.mainactivity.R
 import com.mefki.mainactivity.datasource.APIImpl
 import io.reactivex.disposables.Disposable
-import kotlin.math.sqrt
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -46,9 +45,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
     private var mLocationPermissionGranted = false
     private val handler = Handler()
-    private val interval : Long = 1
+    private val interval : Long = 1000
     private var getMarkers : Disposable? = null
-
     private var circle: Circle? = null
 
     private val mStatusChecker = object : Runnable {
@@ -92,14 +90,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap) {
         mMap = map
+
         getMarkers = APIImpl().getStationsLocalizations().subscribe { stationsList ->
             for(station in stationsList) {
                 mMap.addMarker(
                     MarkerOptions()
-                        .title("sample")
+                        .title("Stacja")
                         .position(LatLng(station.latitude.toDouble(),station.longitude.toDouble()))
-                        .snippet("titties")
+                        .snippet(station.id.toString())
                 )
+
+                map.setOnMarkerClickListener { marker ->
+                    return@setOnMarkerClickListener true
+                }
             }
         }
 
@@ -115,6 +118,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         map.uiSettings.isScrollGesturesEnabled = false
         map.uiSettings.isZoomGesturesEnabled = false
+        map.uiSettings.isRotateGesturesEnabled = false
 
         // Use a custom info window adapter to handle multiple lines of text in the
         // info window contents.
