@@ -24,11 +24,13 @@ class APIImpl : API{
         return api.getStationsLocalizations()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .onErrorReturn { emptyList() }
     }
 
     override fun getAvailableBikes(ids: String): Observable<List<StationBikes>> {
         return api.getAvailableBikes(ids)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .onErrorReturn { emptyList() }
     }
 }
